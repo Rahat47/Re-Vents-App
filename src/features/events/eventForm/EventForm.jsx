@@ -2,8 +2,13 @@ import cuid from "cuid";
 import React, { useState } from "react";
 import { Button, Form, Header, Segment } from "semantic-ui-react";
 
-export default function EventForm({ setFormOpen, setEvent, createEvent }) {
-    const initialValues = {
+export default function EventForm({
+    setFormOpen,
+    setEvent,
+    createEvent,
+    selectedEvent,
+}) {
+    const initialValues = selectedEvent ?? {
         title: "",
         category: "",
         description: "",
@@ -18,7 +23,7 @@ export default function EventForm({ setFormOpen, setEvent, createEvent }) {
         createEvent({
             ...values,
             id: cuid(),
-            hostedBy: "Bob",
+            hostedBy: "User",
             attendees: [],
             hostPhotoURL: "/assets/user.png",
         });
