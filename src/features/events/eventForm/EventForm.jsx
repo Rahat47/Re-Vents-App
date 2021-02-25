@@ -7,6 +7,7 @@ export default function EventForm({
     setEvent,
     createEvent,
     selectedEvent,
+    updateEvent,
 }) {
     const initialValues = selectedEvent ?? {
         title: "",
@@ -20,13 +21,15 @@ export default function EventForm({
     const [values, setValues] = useState(initialValues);
 
     function handleFormSumbit() {
-        createEvent({
-            ...values,
-            id: cuid(),
-            hostedBy: "User",
-            attendees: [],
-            hostPhotoURL: "/assets/user.png",
-        });
+        selectedEvent
+            ? updateEvent({ ...selectedEvent, ...values })
+            : createEvent({
+                  ...values,
+                  id: cuid(),
+                  hostedBy: "User",
+                  attendees: [],
+                  hostPhotoURL: "/assets/user.png",
+              });
         setFormOpen(false);
     }
 
@@ -37,7 +40,11 @@ export default function EventForm({
 
     return (
         <Segment clearing>
-            <Header content="Create New Event" />
+            <Header
+                content={
+                    selectedEvent ? "Update The Event" : "Create New Event"
+                }
+            />
             <Form onSubmit={handleFormSumbit}>
                 <Form.Field>
                     <input
