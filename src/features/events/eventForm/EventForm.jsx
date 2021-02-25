@@ -1,5 +1,6 @@
 import cuid from "cuid";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button, Form, Header, Icon, Segment } from "semantic-ui-react";
 
 export default function EventForm({
@@ -116,7 +117,8 @@ export default function EventForm({
                     negative
                     type="submit"
                     floated="right"
-                    onClick={() => setFormOpen(false)}
+                    as={Link}
+                    to={"/events"}
                 >
                     <Button.Content visible>Cancel</Button.Content>
                     <Button.Content hidden>

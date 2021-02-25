@@ -8,7 +8,7 @@ import {
     Menu,
 } from "semantic-ui-react";
 
-export default function SignedInMenu() {
+export default function SignedInMenu({ signOut }) {
     return (
         <Menu.Item position="right">
             <Image avatar spaced="right" src="/assets/user.png" />
@@ -21,7 +21,11 @@ export default function SignedInMenu() {
                         icon="plus"
                     />
                     <DropdownItem text="My Profile" icon="user" />
-                    <DropdownItem text="Sign Out" icon="power" />
+                    <DropdownItem
+                        onClick={signOut}
+                        text="Sign Out"
+                        icon="power"
+                    />
                 </DropdownMenu>
             </Dropdown>
         </Menu.Item>
