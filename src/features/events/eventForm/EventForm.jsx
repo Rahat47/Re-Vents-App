@@ -1,6 +1,6 @@
 import cuid from "cuid";
 import React, { useState } from "react";
-import { Button, Form, Header, Segment } from "semantic-ui-react";
+import { Button, Form, Header, Icon, Segment } from "semantic-ui-react";
 
 export default function EventForm({
     setFormOpen,
@@ -107,7 +107,9 @@ export default function EventForm({
                 </Form.Field>
                 <Button animated type="submit" positive floated="right">
                     <Button.Content visible>Submit</Button.Content>
-                    <Button.Content hidden>Submit</Button.Content>
+                    <Button.Content hidden>
+                        <Icon name="check" />
+                    </Button.Content>
                 </Button>
                 <Button
                     animated="vertical"
@@ -117,7 +119,9 @@ export default function EventForm({
                     onClick={() => setFormOpen(false)}
                 >
                     <Button.Content visible>Cancel</Button.Content>
-                    <Button.Content hidden>Cancel</Button.Content>
+                    <Button.Content hidden>
+                        <Icon name="close" />
+                    </Button.Content>
                 </Button>
             </Form>
         </Segment>

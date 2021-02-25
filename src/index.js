@@ -4,10 +4,14 @@ import 'semantic-ui-css/semantic.min.css';
 import './app/layout/styles.css';
 import App from './app/layout/App.jsx';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+
+const rootEl = document.getElementById('root')
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root')
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>, rootEl
 );
 
 // If you want to start measuring performance in your app, pass a function
