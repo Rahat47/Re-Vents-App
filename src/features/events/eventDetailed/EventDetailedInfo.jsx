@@ -1,7 +1,7 @@
 import { React } from "react";
 import { Segment, Grid, Button, Icon } from "semantic-ui-react";
 
-export default function EventDetailedInfo() {
+export default function EventDetailedInfo({ event }) {
     return (
         <Segment.Group>
             <Segment attached="top">
@@ -10,7 +10,7 @@ export default function EventDetailedInfo() {
                         <Icon size="large" color="teal" name="info" />
                     </Grid.Column>
                     <Grid.Column width={15}>
-                        <p>Event Description</p>
+                        <p>{event.description}</p>
                     </Grid.Column>
                 </Grid>
             </Segment>
@@ -24,7 +24,7 @@ export default function EventDetailedInfo() {
                         />
                     </Grid.Column>
                     <Grid.Column width={15}>
-                        <span>Event Date</span>
+                        <span>{event.date}</span>
                     </Grid.Column>
                 </Grid>
             </Segment>
@@ -38,7 +38,7 @@ export default function EventDetailedInfo() {
                         />
                     </Grid.Column>
                     <Grid.Column width={11}>
-                        <span>Event Venue</span>
+                        <span>{event.venue}</span>
                     </Grid.Column>
                     <Grid.Column width={4}>
                         <Button color="teal" size="tiny" content="Show Map" />
