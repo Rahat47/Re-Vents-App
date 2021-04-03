@@ -1,9 +1,16 @@
 import cuid from "cuid";
-import React, { useState } from "react";
+import { Formik, Form } from "formik";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button, Form, Header, Icon, Segment } from "semantic-ui-react";
+import { Button, Header, Segment } from "semantic-ui-react";
 import { createEvent, updateEvent } from "../eventActions";
+import * as Yup from "yup";
+import TextInput from "../../../app/common/form/TextInput";
+import CustomTextArea from "../../../app/common/form/CustomTextArea";
+import CustomSelect from "../../../app/common/form/CustomSelect";
+import { categoryData } from "../../../app/api/categoryOptions";
+import CustomDate from "../../../app/common/form/CustomDate";
 
 export default function EventForm({ match, history }) {
     const dispatch = useDispatch();
@@ -21,115 +28,74 @@ export default function EventForm({ match, history }) {
         date: "",
     };
 
-    const [values, setValues] = useState(initialValues);
-
-    function handleFormSumbit() {
-        selectedEvent
-            ? dispatch(updateEvent({ ...selectedEvent, ...values }))
-            : dispatch(
-                  createEvent({
-                      ...values,
-                      id: cuid(),
-                      hostedBy: "User",
-                      attendees: [],
-                      hostPhotoURL: "/assets/user.png",
-                  })
-              );
-        history.push("/events");
-    }
-
-    function handleInputChange(e) {
-        const { name, value } = e.target;
-        setValues({ ...values, [name]: value });
-    }
+    const validationSchema = Yup.object({
+        title: Yup.string().required("You must provide a title!"),
+        category: Yup.string().required("You must provide a category!"),
+        description: Yup.string().required(),
+        city: Yup.string().required(),
+        venue: Yup.string().required(),
+        date: Yup.string().required(),
+    });
 
     return (
         <Segment clearing>
-            <Header
-                content={
-                    selectedEvent ? "Update The Event" : "Create New Event"
-                }
-            />
-            <Form onSubmit={handleFormSumbit}>
-                <Form.Field>
-                    <input
-                        type="text"
-                        placeholder="Event Title"
-                        name="title"
-                        value={values.title}
-                        onChange={e => handleInputChange(e)}
-                    />
-                </Form.Field>
-
-                <Form.Field>
-                    <input
-                        type="text"
-                        placeholder="Category"
+            <Formik
+                initialValues={initialValues}
+                onSubmit={values => {
+                    selectedEvent
+                        ? dispatch(updateEvent({ ...selectedEvent, ...values }))
+                        : dispatch(
+                              createEvent({
+                                  ...values,
+                                  id: cuid(),
+                                  hostedBy: "User",
+                                  attendees: [],
+                                  hostPhotoURL: "/assets/user.png",
+                              })
+                          );
+                    history.push("/events");
+                }}
+                validationSchema={validationSchema}
+            >
+                <Form autoComplete="off" className="ui form">
+                    <Header sub color="teal" content="Event Details" />
+                    <TextInput name="title" placeholder="Event Title" />
+                    <CustomSelect
+                        options={categoryData}
                         name="category"
-                        value={values.category}
-                        onChange={e => handleInputChange(e)}
+                        placeholder="Event Category"
                     />
-                </Form.Field>
-
-                <Form.Field>
-                    <input
-                        type="text"
-                        placeholder="Description"
+                    <CustomTextArea
+                        rows={3}
                         name="description"
-                        value={values.description}
-                        onChange={e => handleInputChange(e)}
+                        placeholder="Event Description"
                     />
-                </Form.Field>
-
-                <Form.Field>
-                    <input
-                        type="text"
-                        placeholder="City"
-                        name="city"
-                        value={values.city}
-                        onChange={e => handleInputChange(e)}
-                    />
-                </Form.Field>
-
-                <Form.Field>
-                    <input
-                        type="text"
-                        placeholder="Venue"
-                        name="venue"
-                        value={values.venue}
-                        onChange={e => handleInputChange(e)}
-                    />
-                </Form.Field>
-
-                <Form.Field>
-                    <input
-                        type="date"
-                        placeholder="Date"
+                    <Header sub color="teal" content="Event Location Details" />
+                    <TextInput name="city" placeholder="Event City" />
+                    <TextInput name="venue" placeholder="Event Venue" />
+                    <CustomDate
                         name="date"
-                        value={values.date}
-                        onChange={e => handleInputChange(e)}
+                        placeholderText="Event Date"
+                        timeFormat="HH:mm"
+                        showTimeSelect
+                        timeCaption="time"
+                        dateFormat="MMMM d, yyyy h:mm a"
                     />
-                </Form.Field>
-                <Button animated type="submit" positive floated="right">
-                    <Button.Content visible>Submit</Button.Content>
-                    <Button.Content hidden>
-                        <Icon name="check" />
-                    </Button.Content>
-                </Button>
-                <Button
-                    animated="vertical"
-                    negative
-                    type="submit"
-                    floated="right"
-                    as={Link}
-                    to={"/events"}
-                >
-                    <Button.Content visible>Cancel</Button.Content>
-                    <Button.Content hidden>
-                        <Icon name="close" />
-                    </Button.Content>
-                </Button>
-            </Form>
+
+                    <Button type="submit" positive floated="right">
+                        Submit
+                    </Button>
+                    <Button
+                        negative
+                        type="submit"
+                        floated="right"
+                        as={Link}
+                        to={"/events"}
+                    >
+                        Cancel
+                    </Button>
+                </Form>
+            </Formik>
         </Segment>
     );
 }
