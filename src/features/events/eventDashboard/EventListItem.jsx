@@ -63,7 +63,7 @@ export default function EventListItem({ event }) {
                     to={`/events/${event.id}`}
                     animated
                     floated="right"
-                    color="teal"
+                    secondary
                 >
                     <Button.Content visible>View</Button.Content>
                     <Button.Content hidden>

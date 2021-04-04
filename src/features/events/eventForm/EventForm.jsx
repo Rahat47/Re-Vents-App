@@ -57,44 +57,57 @@ export default function EventForm({ match, history }) {
                 }}
                 validationSchema={validationSchema}
             >
-                <Form autoComplete="off" className="ui form">
-                    <Header sub color="teal" content="Event Details" />
-                    <TextInput name="title" placeholder="Event Title" />
-                    <CustomSelect
-                        options={categoryData}
-                        name="category"
-                        placeholder="Event Category"
-                    />
-                    <CustomTextArea
-                        rows={3}
-                        name="description"
-                        placeholder="Event Description"
-                    />
-                    <Header sub color="teal" content="Event Location Details" />
-                    <TextInput name="city" placeholder="Event City" />
-                    <TextInput name="venue" placeholder="Event Venue" />
-                    <CustomDate
-                        name="date"
-                        placeholderText="Event Date"
-                        timeFormat="HH:mm"
-                        showTimeSelect
-                        timeCaption="time"
-                        dateFormat="MMMM d, yyyy h:mm a"
-                    />
+                {({ isSubmitting, dirty, isValid }) => (
+                    <Form autoComplete="off" className="ui form">
+                        <Header sub color="teal" content="Event Details" />
+                        <TextInput name="title" placeholder="Event Title" />
+                        <CustomSelect
+                            options={categoryData}
+                            name="category"
+                            placeholder="Event Category"
+                        />
+                        <CustomTextArea
+                            rows={3}
+                            name="description"
+                            placeholder="Event Description"
+                        />
+                        <Header
+                            sub
+                            color="teal"
+                            content="Event Location Details"
+                        />
+                        <TextInput name="city" placeholder="Event City" />
+                        <TextInput name="venue" placeholder="Event Venue" />
+                        <CustomDate
+                            name="date"
+                            placeholderText="Event Date"
+                            timeFormat="HH:mm"
+                            showTimeSelect
+                            timeCaption="time"
+                            dateFormat="MMMM d, yyyy h:mm a"
+                        />
 
-                    <Button type="submit" positive floated="right">
-                        Submit
-                    </Button>
-                    <Button
-                        negative
-                        type="submit"
-                        floated="right"
-                        as={Link}
-                        to={"/events"}
-                    >
-                        Cancel
-                    </Button>
-                </Form>
+                        <Button
+                            loading={isSubmitting}
+                            disabled={!isValid || !dirty || isSubmitting}
+                            type="submit"
+                            positive
+                            floated="right"
+                        >
+                            Submit
+                        </Button>
+                        <Button
+                            disabled={isSubmitting}
+                            negative
+                            type="submit"
+                            floated="right"
+                            as={Link}
+                            to={"/events"}
+                        >
+                            Cancel
+                        </Button>
+                    </Form>
+                )}
             </Formik>
         </Segment>
     );
